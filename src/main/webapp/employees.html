@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Employee Heirarchy</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/0.10.0/lodash.min.js"></script>
+    <script type="text/ng-template"  id="tree_item.html">
+
+        <tr style="width:100%">
+            <td>
+                {{data.employeeName}}
+                <div id="expanded-data">
+                    <table class="table table-striped" id="nested-table">
+                        <div ng-repeat="data in data.children" ng-include="'tree_item.html'"></div>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </script>
+    <script src="view/app.js"></script>
+    <style>
+        a {
+            cursor: pointer;
+            background-color: lightblue;
+        }
+
+        table, th , td  {
+            border: 1px solid grey;
+            border-collapse: collapse;
+            padding: 5px;
+            margin-left: 100px;
+        }
+        table tr:nth-child(odd) {
+            background-color: #f1f1f1;
+        }
+        table tr:nth-child(even) {
+            background-color: #ffffff;
+        }
+
+        .button {
+            display: block;
+            width: 250px;
+            height: 25px;
+            background: #4E9CAF;
+            padding: 10px;
+            text-align: center;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+        }
+
+        #expanded-data {
+            margin-left: 20px;
+        }
+
+    </style>
+</head>
+<body>
+<div ng-controller="EmployeeCtrl">
+    <br />
+    &nbsp;&nbsp;&nbsp;<a ng-click="getAllEmployees()" class="button">List Employees</a><br />
+    <br />
+    <table>
+        <th>Employee Name</th>
+        <th>Employee ID</th>
+        <th>Manager ID</th>
+        <tr ng-repeat="employee in employees">
+            <td>{{employee.employeeName}}</td>
+            <td> {{employee.employeeId}}</td>
+            <td>{{employee.managerId}}</td>
+            <td> <a ng-click="displayHierarchy(employee.employeeId, employee.managerId)" class="button">Show Hierarchy</a><br /></td>
+        </tr>
+    </table>
+    <br/>
+
+    <table>
+
+        <th>Hierarchy</th>
+        <tbody ng-repeat="data in hierarchyData" ng-include="'tree_item.html'">
+
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
